@@ -4,4 +4,6 @@ from django.shortcuts import render, HttpResponse
 
 
 def home(request):
-    return HttpResponse('<h1> Works fine! <h1/>')
+    
+    context = {'name':'Brian', 'age':23}
+    return render(request, 'movies/index.html', context) # (request, htmlfile, context {})
