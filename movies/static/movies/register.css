@@ -1,0 +1,54 @@
+body{
+    background-color:#f0f2f5;
+    /* background-color: darkgray; */
+   
+}
+.message-section{
+    background-color: red;
+    font-size: 24px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.left-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 100px;
+    /* background-color: antiquewhite; */
+}
+.title{
+    color: rgb(0, 64, 255);
+  
+}
+
+.container{
+    margin-top: 50px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: white;
+    padding: 20px 20px 20px 20px;
+   
+}
+.list-group-item{
+  
+    margin-bottom: 10px;
+    margin-top: 10px;
+    size: 100px;
+}
+.form-control{
+    height: 50px;
+}
+.btn{
+    background-color: rgb(0, 176, 0);
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.btn:hover{
+    background-color: rgb(0, 141, 0);
+}
+

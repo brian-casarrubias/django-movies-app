@@ -12,6 +12,15 @@
             <link rel="stylesheet" type="text/css" href="{% static 'movies/main.css' %}" >
         </head>
         <body>
+          <div class="message-section text-center">
+                
+            {% if messages %}
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            {% endif %}
+          </div>
+            
            
             {% if not user.is_authenticated %}
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -32,7 +41,7 @@
                                 <a class="nav-link" href="#">Sign In</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Sign Up</a>
+                                <a class="nav-link" href="{% url 'register-page' %}">Sign Up</a>
                             </li>
                             </ul>
                         </div>
@@ -112,11 +121,10 @@
 
                 <div class="right-about-section">
                   <h1 style="margin-bottom: 50px;" >About me</h1>
-                  <h2>Hello my name is Brian Casarrubias, I have developed this Web Application to help no-life movie loving faggots such as my brother, to be able to find the top rated movies instantly. This app offers many features, such as creating an account, 
-                    having the ability to modify your profile picture, adding movies to your "watch list", being able to remove movies, 
-                    and even marking them as "completed/finished". This Web App is in its earliest stage of development, and will be constantly updated. 
-                    If you have any questions, feel free to scroll down or click on the "Contact me" section of the website! 
-                    <span style="display: block; margin-top: 20px;" >-Brian Casarrubias</span></h1>
+                  <h3>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illo magni vitae vero repellat eveniet harum impedit? Facilis exercitationem laborum sit iure dicta neque eius, repellat optio praesentium deleniti! Sint, molestiae!
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis dicta fuga vitae excepturi expedita ipsa qui, ducimus aliquam iste quaerat harum. Labore possimus cum incidunt nemo consequatur vel, ex dolorem?
+                    
+                  </h3>
                 </div>
               </div>
 

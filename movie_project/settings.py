@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     #third party installs
     'debug_toolbar',
+    'widget_tweaks',
 
     # my apps
     'movies.apps.MoviesConfig',
