@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from movies.forms import UserRegisterForm
 from django.contrib import messages
+from django.contrib.auth import authenticate # im using this so i can authenticate via the home view without the use of class based views, im doing it manually
 
 # Create your views here.
 
@@ -19,11 +20,10 @@ def register(request):
 
         if form.is_valid():
             form.save()
-            username = form.cleaned_data['username']
+            username = form.cleaned_data['username'] # gets the username
             messages.success(request, f'Account: "{username}" successfuly created!')
             return redirect('home-page')
         else:
-            print('should worK!')
             messages.error(request, 'Could not create account, please try again!')
             return redirect('register-page')
     else:

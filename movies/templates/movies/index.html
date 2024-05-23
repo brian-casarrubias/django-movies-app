@@ -1,4 +1,4 @@
-
+{% load widget_tweaks %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -12,6 +12,7 @@
             <link rel="stylesheet" type="text/css" href="{% static 'movies/main.css' %}" >
         </head>
         <body>
+          <!-- if there are any messages they will appear on the top of the screen-->
           <div class="message-section text-center">
                 
             {% if messages %}
@@ -38,7 +39,43 @@
                                 <a class="nav-link" href="#contact-section">Contact</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Sign In</a>
+                                <a id="js-signin-btn" class="nav-link" href="#">Sign In</a>
+                                 <!--start of the login form-->
+                <div class="container" id="container-login">
+                  
+                  <div class="close-login-form-section text-end">
+                    
+                    <ion-icon id="js-close-icon" class="close-icon" style="font-size: 50px;" name="close-outline"></ion-icon>
+                  </div>
+                  <hr style="margin-bottom: 30px; " >
+                  <form method="POST" >
+                      {% csrf_token %}
+                        <div class="form-fields text-center">
+                          <div class="input-group mb-3">
+                              <input type="text" class="form-control mb-3" aria-label="Username" aria-describedby="inputGroup-sizing-default" placeholder="Username" name="usernameInput">
+                          </div>
+                          <div class="input-group mb-3">
+                              <input type="password" class="form-control" aria-label="Password" aria-describedby="inputGroup-sizing-default" placeholder="Password" name="passwordInput">
+                          </div>
+                        </div>
+                        <div class="submit-button text-center">
+                          <button title="Click to login" type="submit" class="btn btn-primary" id="login-btn" >Login</button>
+                        </div>
+                         
+  
+                          <div style="margin-top: 20px;" class="forgot-pss text-center">
+                              <a title="click to reset password" style="text-decoration: none;" href="#" >Forgot password?</a>
+                          </div>
+                          <hr>
+                          <div class="submit-button text-center">
+                              <!-- <button title="Click once you have filled out the form" type="submit" class="btn btn-primary">Create new account</button> -->
+                              <a  href="{% url 'register-page' %}" title="Click once you have filled out the form" type="submit" class="btn btn-primary" >Create new account</a>
+                          </div>
+                          
+  
+                  </form>
+              </div>
+                 <!--END of the login form-->
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'register-page' %}">Sign Up</a>
@@ -47,6 +84,9 @@
                         </div>
                     </div>
                 </nav>
+
+               
+
             {% else %}
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                     <div class="container-fluid">
@@ -80,7 +120,9 @@
             <div id="backgroundCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="7000">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-                    <img src="{% static 'movies/images/dune.jpg' %}" alt="picture of dune pt.2">
+                    <img src="{% static 'movies/images/dune.jpg' %}" alt="dune pt.2 image">
+                  
+
                     <div class="overlay"></div>
                     <div class="carousel-caption">
                       <h1 class="display-3">TopMovies</h1>
@@ -88,7 +130,7 @@
                     </div>
                   </div>
                   <div class="carousel-item">
-                    <img src="{% static 'movies/images/furiosa.jpg' %}" alt="picture of furiosa">
+                    <img src="{% static 'movies/images/furiosa.jpg' %}" alt="furiosa movie image">
                     <div class="overlay"></div>
                     <div class="carousel-caption">
                       <h1 class="display-3">TopMovies</h1>
@@ -96,7 +138,7 @@
                     </div>
                   </div>
                   <div class="carousel-item">
-                    <img src="{% static 'movies/images/apes.jpg' %}" alt="picture of apes">
+                    <img src="{% static 'movies/images/apes.jpg' %}" alt="kingdom of the apes image">
                     <div class="overlay"></div>
                     <div class="carousel-caption">
                       <h1 class="display-3">TopMovies</h1>
@@ -104,6 +146,9 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div  style="margin-bottom: 500px;" class="div">
+
               </div>
 
               <!-- Bottom Mid Section start-->
@@ -123,7 +168,7 @@
                   <h1 style="margin-bottom: 50px;" >About me</h1>
                   <h3>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illo magni vitae vero repellat eveniet harum impedit? Facilis exercitationem laborum sit iure dicta neque eius, repellat optio praesentium deleniti! Sint, molestiae!
                     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis dicta fuga vitae excepturi expedita ipsa qui, ducimus aliquam iste quaerat harum. Labore possimus cum incidunt nemo consequatur vel, ex dolorem?
-                    
+
                   </h3>
                 </div>
               </div>
@@ -142,5 +187,10 @@
             <!--Bootstrap stuff-->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+            <script src="{% static 'movies/login.js' %}" ></script>
+
+            <!--Icon stuff-->
+            <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
         </body>
     </html>

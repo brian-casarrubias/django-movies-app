@@ -6,6 +6,90 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Login section  */
+
+.left-section{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 100px;
+  /* background-color: antiquewhite; */
+}
+.title{
+  color: rgb(0, 64, 255);
+
+}
+
+/* this is the container for the login menu */
+#container-login{
+  position: absolute;
+  z-index: 10000;
+  margin-left: -350px;
+  margin-top: 50px;
+  width: 450px;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.25s ease-in-out;
+ 
+}
+.open-menu{
+  max-height: 655px!important;
+}
+.close-menu{
+  max-height: 0px;
+}
+.close-icon{
+ 
+  border-radius: 50px;
+  transition: background 0.25s ease-in-out;
+  cursor: pointer;
+}
+.close-icon:hover{
+  background-color: rgb(234, 234, 234);
+}
+
+.form-control{
+  height: 50px;
+  row-gap: 50px!important;
+  column-gap: 50px!important;
+  gap: 50px!important;
+ 
+  
+}
+#login-btn{
+  background-color: #087fff;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  width: 150px;
+  font-family: Arial, Helvetica, sans-serif;
+  
+}
+
+#login-btn:hover{
+  background-color: rgb(0, 111, 196)
+}
+
+
+.btn{
+  background-color: rgb(0, 176, 0);
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 20px!important;
+}
+.btn:hover{
+  background-color: rgb(0, 141, 0);
+}
+
+
+
+
 .navbar-brand {
     font-size: 1.5rem !important; /* Increase font size of the app name */
   }
@@ -106,5 +190,9 @@
 
   .right-about-section {
       text-align: center;
+  }
+  #container-login{
+    margin-left: 0px;
+    width: 400px;
   }
 }
