@@ -9,3 +9,6 @@ class Profile(models.Model):
     
     ## add profile image later!!!!
     # profile_image = models.ImageField()
+
+    def __str__(self):
+        return f'{self.user}'

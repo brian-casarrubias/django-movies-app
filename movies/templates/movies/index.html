@@ -13,11 +13,14 @@
         </head>
         <body>
           <!-- if there are any messages they will appear on the top of the screen-->
-          <div class="message-section text-center">
+          <div class="message-section text-center" id='js-message-section'>
                 
             {% if messages %}
                 {% for message in messages %}
-                    {{ message }}
+                  <div class="{% if 'error' in message.tags %}to-red{% elif 'success' in message.tags %}to-green{% endif %}">
+                      {{ message }}
+                  </div>
+                   
                 {% endfor %}
             {% endif %}
           </div>
@@ -39,8 +42,12 @@
                                 <a class="nav-link" href="#contact-section">Contact</a>
                             </li>
                             <li class="nav-item">
-                                <a id="js-signin-btn" class="nav-link" href="#">Sign In</a>
-                                 <!--start of the login form-->
+                                <a id="js-signin-btn" class="nav-link" style="cursor: pointer;" >Sign In</a>
+                            </li>
+
+
+
+              <!--start of the login form-->
                 <div class="container" id="container-login">
                   
                   <div class="close-login-form-section text-end">
@@ -59,7 +66,7 @@
                           </div>
                         </div>
                         <div class="submit-button text-center">
-                          <button title="Click to login" type="submit" class="btn btn-primary" id="login-btn" >Login</button>
+                          <button title="Click to login" type="submit" class="btn btn-primary" id="login-btn"  >Login</button>
                         </div>
                          
   
@@ -74,8 +81,10 @@
                           
   
                   </form>
-              </div>
-                 <!--END of the login form-->
+                </div>
+              <!--END of the login form-->
+
+
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'register-page' %}">Sign Up</a>
@@ -96,19 +105,23 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#contact-section">Contact</a>
-                            </li>
-                                
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Discover movies</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">My movies</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Logout</a>
-                            </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="#">{{ user }}</a>
+                              </li>
+
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#contact-section">Contact</a>
+                              </li>
+                                  
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#">Discover movies</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="#">My movies</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link" href="{% url 'logout-page' %}">Logout</a>
+                              </li>
                             </ul>
                         </div>
                     </div>
@@ -147,13 +160,10 @@
                   </div>
                 </div>
               </div>
-              <div  style="margin-bottom: 500px;" class="div">
-
-              </div>
-
+             
               <!-- Bottom Mid Section start-->
 
-              <div class="container text-center">
+              <div style="margin-top: 100px;" class="container text-center">
                 <button class="discover-btn" >Discover Movies Now!!</button>
               </div>
 

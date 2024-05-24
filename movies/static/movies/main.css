@@ -5,6 +5,18 @@
   color: white;
   font-family: Arial, Helvetica, sans-serif;
 }
+.to-red{
+  background-color: red;
+  font-size: 24px;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.to-green{
+  background-color: green;
+  font-size: 24px;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 /* Login section  */
 
@@ -26,7 +38,7 @@
 #container-login{
   position: absolute;
   z-index: 10000;
-  margin-left: -350px;
+  margin-left: -250px;
   margin-top: 50px;
   width: 450px;
   border-radius: 10px;
@@ -96,6 +108,7 @@
   .nav-link {
     font-size: 1.25rem; /* Increase font size of the links */
     margin-right: 10px !important;
+   
   }
   html, body {
     height: 100%;
@@ -126,6 +139,7 @@
 
 
   .discover-btn {
+    
     background: linear-gradient(45deg, #ff6f61, #d9a7c7);
     background-size: 200% 200%;
     animation: gradient-animation 4s ease infinite;
