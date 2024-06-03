@@ -1,6 +1,7 @@
 {% extends 'movies/index.html' %}
 
 
+
 {% block content %} 
 
     <div class="heading-section text-center">
@@ -9,7 +10,17 @@
 
     
     <div  id="container" class="container text-center">
+        <button
+            id="js-search-movies" 
+            hx-get="{% url 'request-movies-page' %}"
+            hx-target="#container"
+            hx-swap="innerHTML"
+            class="find-movies-btn" >Search Movies Now!
+        </button>
         {% include 'movies/snippets/find-movies.html' %}
+        <div class="spinner-border" id="js-loading-spinner" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
 
    

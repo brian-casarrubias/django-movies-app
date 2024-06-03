@@ -220,3 +220,38 @@
   margin-top: 200px;
 }
 
+/* the find movies button on the discover movies section */
+.find-movies-btn {
+  display: inline-block;  /* Ensure the anchor behaves like a button, now hover worrks!!! */
+  background: linear-gradient(45deg, #ff6f61, #d9a7c7);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+  transition: transform 0.25s ease-in-out;
+  text-decoration: none;  
+  text-align: center;    
+}
+.find-movies-btn:hover{
+
+  transform: scale(1.2)!important; 
+
+}
+
+/* this is for spinner loader things */
+.spinner-border{
+  display: none;
+  font-size: 20px;
+  width: 75px;
+  height: 75px;
+}
+.show-loader{
+  display: inline-block;
+}
+
