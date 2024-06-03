@@ -9,6 +9,7 @@ urlpatterns = [
 
     ########################## MAIN PROGRAM URLS #####################
     path('discover-movies/', views.discover_movies, name='discover-movies-page'),
-    path('request/discover-movies/', views.request_discover_movies, name='request-movies-page'), # this is the snippet that webscrapes movies
+    path('request/discover-movies/', views.request_discover_movies, name='request-movies-page'), # this is the snippet view that webscrapes movies
+    
     
 ]

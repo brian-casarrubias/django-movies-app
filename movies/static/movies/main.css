@@ -218,13 +218,13 @@
 
 .container{
   margin-top: 200px;
+  
 }
 
 /* the find movies button on the discover movies section */
 .find-movies-btn {
-  display: inline-block;  /* Ensure the anchor behaves like a button, now hover worrks!!! */
+  display: block;  /* Ensure the anchor behaves like a button, now hover worrks!!! */
   background: linear-gradient(45deg, #ff6f61, #d9a7c7);
-  background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
   color: white;
   border: none;
@@ -235,8 +235,8 @@
   margin-bottom: 100px;
   font-family: Arial, Helvetica, sans-serif;
   transition: transform 0.25s ease-in-out;
-  text-decoration: none;  
-  text-align: center;    
+  
+  
 }
 .find-movies-btn:hover{
 

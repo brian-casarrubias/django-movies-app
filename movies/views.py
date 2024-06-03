@@ -92,8 +92,10 @@ title_regex = re.compile(r'mediatitle="([^"]*)"')
 audience_score_regex = re.compile(r'audiencescore="(\d\d)"')
 critics_score_regex = re.compile(r'criticsscore="(\d\d)"')
 movie_images_regex = re.compile(r'src="([^"]*)"')
-#this is the function that scrapes rotten tomatoes for movies!
 
+
+#this is the function that scrapes rotten tomatoes for movies!
+#ill use this to scrape, and sort things in other functions
 def scrape_website(url):
     source = requests.get(url).content
     soup = BeautifulSoup(source, 'lxml')

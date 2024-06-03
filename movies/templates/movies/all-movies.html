@@ -10,13 +10,42 @@
 
     
     <div  id="container" class="container text-center">
-        <button
-            id="js-search-movies" 
+        <!-- cool thing i found out is that since i have the find movies button here
+        once i get all the information from the request. It will replace the button with the table. Also
+        when i click on the button, i made it so that the loader is in-line block so its visible now
+        then when the table gets returned, it will actually remove the spinner by itself along with the button
+        because it replaces the innerHTML like i said to do in the HTMX -->
+        <div class="d-flex justify-content-center">
+            <button
+                id="js-search-movies" 
+                hx-get="{% url 'request-movies-page' %}"
+                hx-target="#container"
+                hx-swap="innerHTML"
+                class="find-movies-btn" >
+                Search Movies Now!
+            </button>
+            
+        </div>
+
+        <button 
             hx-get="{% url 'request-movies-page' %}"
             hx-target="#container"
             hx-swap="innerHTML"
-            class="find-movies-btn" >Search Movies Now!
+            id="js-toprated" 
+            class="toprated text-center"> 
+            Top rated
         </button>
+
+        <button 
+            hx-get="{% url 'request-movies-page' %}"
+            hx-target="#container"
+            hx-swap="innerHTML"
+            id="js-leastrated" 
+            class="leastrated text-center" >
+            Least rated
+        </button>
+
+    
         {% include 'movies/snippets/find-movies.html' %}
         <div class="spinner-border" id="js-loading-spinner" role="status">
             <span class="visually-hidden">Loading...</span>
