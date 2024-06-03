@@ -111,9 +111,9 @@ def scrape_website(url):
 
     for index, title in enumerate(all_title):
         movie_titles[title] = {
-            'AudienceScore':all_audience_score[index] if index < len(all_audience_score) else None,
-            'CriticScore':all_critics_score[index] if index < len(all_critics_score) else None,
-            'MovieThumbnail':all_imgs[index] if index < len(all_imgs) else None,
+            'AudienceScore':all_audience_score[index] if index < len(all_audience_score) else str(0),
+            'CriticScore':all_critics_score[index] if index < len(all_critics_score) else str(0),
+            'MovieThumbnail':all_imgs[index] if index < len(all_imgs) else str(0),
         }
     return movie_titles
 
@@ -122,7 +122,7 @@ def scrape_website(url):
 @login_required
 def request_discover_movies(request):
     #what ever is returned (dictionary)
-    movie_titles = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=2')
+    movie_titles = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
     
     context = {
         'movie_titles':movie_titles,
@@ -131,6 +131,57 @@ def request_discover_movies(request):
     # for movie, details in movie_titles.items():
     # print(movie, details['AudienceScore'], details['CriticScore'])
         
-    
+    return render(request, 'movies/snippets/find-movies.html', context) 
 
-    return render(request, 'movies/snippets/find-movies.html', context)              
+@login_required
+def request_top_movies(request):
+    start_timer = time.perf_counter()
+
+    if movie_titles != {}:
+        movies = movie_titles
+       
+    else:
+        movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
+    #this is gonna order from hiehgest values to least
+    order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore'], reverse=True))
+    end_timer = time.perf_counter()
+    print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
+    context = {
+        'order_movies':order_movies,
+    }
+    
+    return render(request, 'movies/snippets/top-movies.html', context) 
+
+
+@login_required
+def request_least_movies(request):
+    start_timer = time.perf_counter()
+
+    if movie_titles != {}:
+        movies = movie_titles
+    else:
+        movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
+    #this is gonna order from hiehgest values to least
+    order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore']))
+    end_timer = time.perf_counter()
+    print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
+    context = {
+        'order_movies':order_movies,
+    }
+    return render(request, 'movies/snippets/top-movies.html', context) 
+
+@login_required
+def request_title_ordered(request):
+    start_timer = time.perf_counter()
+    if movie_titles != {}:
+        movies = movie_titles
+    else:
+        movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
+
+    order_movies = dict(sorted(movies.items(), key= lambda x: x[0], reverse=False))
+    end_timer = time.perf_counter()
+    print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
+    context = {
+        'order_movies':order_movies,
+    }
+    return render(request, 'movies/snippets/name-ordered-movies.html', context) 

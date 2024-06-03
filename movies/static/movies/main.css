@@ -255,3 +255,23 @@
   display: inline-block;
 }
 
+/* this is the rating sorting butns */
+.toprated, .leastrated{
+  background-color: rgba(255, 255, 255, 0.639);
+  color: rgb(0, 0, 0);
+  border-radius: 3px;
+  width: 100px;
+  height: 35px;
+  border: solid 1px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  transition: all 0.25s ease-in-out;
+  margin-right: 10px;
+  
+}
+.toprated:hover, .leastrated:hover{
+  transform: scale(1.03);
+  background-color: rgba(230, 230, 230, 0.997);
+}
+
+

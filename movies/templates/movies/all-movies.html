@@ -5,7 +5,7 @@
 {% block content %} 
 
     <div class="heading-section text-center">
-        <h1>Discover New Movies!</h1>
+        <h1>Googoo gaga!!!</h1>
     </div>
 
     
@@ -22,29 +22,10 @@
                 hx-target="#container"
                 hx-swap="innerHTML"
                 class="find-movies-btn" >
-                Search Movies Now!
+                Discover!
             </button>
             
         </div>
-
-        <button 
-            hx-get="{% url 'request-movies-page' %}"
-            hx-target="#container"
-            hx-swap="innerHTML"
-            id="js-toprated" 
-            class="toprated text-center"> 
-            Top rated
-        </button>
-
-        <button 
-            hx-get="{% url 'request-movies-page' %}"
-            hx-target="#container"
-            hx-swap="innerHTML"
-            id="js-leastrated" 
-            class="leastrated text-center" >
-            Least rated
-        </button>
-
     
         {% include 'movies/snippets/find-movies.html' %}
         <div class="spinner-border" id="js-loading-spinner" role="status">
@@ -52,9 +33,7 @@
         </div>
     </div>
 
-   
 
-   
 
 {% endblock content %}
 

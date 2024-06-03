@@ -1,11 +1,15 @@
 
-<style>
 
+<style>
     .add-movie{
         color: green;
         width: 55px;
         height: 55px;
     }
+    .show-rated{
+        display: inline-block;
+    }
+
     .movie-thumbnail-find{
         width: 75px;
         height: 75px;
@@ -16,59 +20,46 @@
         font-size: 18px;
     }
 
-@keyframes gradient-animation {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
+
+
 
   
 </style>
 
-   
     
     <table class="table table-striped table-hover" style="cursor: pointer; width: 100%!important;">
-        
-
+            <div class="spinner-border" id="js-loading-spinner" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
        
-       
-        <thead>
-            <button 
-                hx-get="{% url 'request-top-movies-page' %}"
-                hx-target="#container"
-                hx-swap="innerHTML"
-                id="js-toprated" 
-                class="toprated text-center"> 
-                Top rated
-            </button>
+            <thead>
+                <button 
+                    hx-get="{% url 'request-top-movies-page' %}"
+                    hx-target="#container"
+                    hx-swap="innerHTML"
+                    id="js-toprated" 
+                    class="toprated text-center"> 
+                    Top rated
+                </button>
 
-       
-            <button 
-                hx-get="{% url 'request-least-movies-page' %}"
-                hx-target="#container"
-                hx-swap="innerHTML"
-                id="js-leastrated" 
-                class="leastrated text-center" >
-                Least rated
-            </button> 
-            <button 
-                hx-get="{% url 'request-ordered-movies-page' %}"
-                hx-target="#container"
-                hx-swap="innerHTML"
-                id="js-leastrated" 
-                class="leastrated text-center" >
-                A - Z
-            </button> 
-            
-
+   
+                <button 
+                    hx-get="{% url 'request-least-movies-page' %}"
+                    hx-target="#container"
+                    hx-swap="innerHTML"
+                    id="js-leastrated" 
+                    class="leastrated text-center" >
+                    Least rated
+                </button>
+                <button 
+                    hx-get="{% url 'request-ordered-movies-page' %}"
+                    hx-target="#container"
+                    hx-swap="innerHTML"
+                    id="js-leastrated" 
+                    class="leastrated text-center" >
+                    A - Z
+                </button> 
             <tr>
-              
            
                 <!-- forloop.counter -->
             <th scope="col">#</th>
@@ -79,9 +70,8 @@
             <th scope="col">Add</th>
             </tr>
         </thead>
-        
-        {% if movie_titles.items %}
-            {% for movie, detail in movie_titles.items %}
+        {% if order_movies.items %}
+            {% for movie, detail in order_movies.items %}
                 <tbody>
                     <div class="d-flex justify-content-center">
                         <div class="spinner-border" id="js-loading-spinner" role="status">
@@ -103,4 +93,5 @@
         {% endif %}
     </table>
 
- 
+
+   

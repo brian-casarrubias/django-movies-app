@@ -12,6 +12,7 @@ let isTop = false;
 let isLeast = false;
 
 findMoviesBtn.addEventListener('click', () => {
+ 
     loadingSpinner.classList.add('show-loader');
 })
 highRatingBtn.addEventListener('click', () => {
@@ -20,4 +21,14 @@ highRatingBtn.addEventListener('click', () => {
 leastRatingBtn.addEventListener('click', () => {
     loadingSpinner.classList.add('show-loader');
 })
+
+function removeSpinner(){
+    loadingSpinner.classList.remove('show-loader');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+     // Listen to HTMX events to hide the spinner when the request is completed
+     document.body.addEventListener('htmx:afterRequest', removeSpinner);
+
+});
 

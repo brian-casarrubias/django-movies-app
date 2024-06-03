@@ -10,6 +10,8 @@ urlpatterns = [
     ########################## MAIN PROGRAM URLS #####################
     path('discover-movies/', views.discover_movies, name='discover-movies-page'),
     path('request/discover-movies/', views.request_discover_movies, name='request-movies-page'), # this is the snippet view that webscrapes movies
-    
+    path('request/discover-top-movies/', views.request_top_movies, name='request-top-movies-page'),
+    path('request/discover-least-movies/', views.request_least_movies, name='request-least-movies-page'),
+    path('request/discover-ordered-movies/', views.request_title_ordered, name='request-ordered-movies-page'),
     
 ]
