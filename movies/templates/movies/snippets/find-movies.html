@@ -96,13 +96,26 @@
                         </div>
                         
                     </div>
-                    <tr>
-                    <th scope="row">{{ forloop.counter }}</th> <!-- this is a for loop counter in django, keeps track of the tieration-->
-                    <td><img class="movie-thumbnail-find" src="{{ detail.MovieThumbnail }}" ></td>
-                    <td>{{ movie }}</td>
-                    <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}" >{{ detail.AudienceScore }}%</td>
-                    <td> <img class="img-tomato" src="{% static 'movies/images/tomato.svg' %}" > {{ detail.CriticScore }}%</td>
+                 
+                       
+                        
+                    
+                        
+                    <tr
+                        hx-post="{% url 'add-movie-page' %}"
+                        hx-confirm="Do you want to add '{{ movie }}' to your list?"
+                        hx-trigger="click" 
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+                        <input type="hidden" name="movie" value="{{ movie }}">
+                        
+                        <th scope="row">{{ forloop.counter }}</th> <!-- this is a for loop counter in django, keeps track of the tieration-->
+                        <td><img class="movie-thumbnail-find" src="{{ detail.MovieThumbnail }}" ></td>
+                        <td>{{ movie }}</td>
+                        <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}" >{{ detail.AudienceScore }}%</td>
+                        <td> <img class="img-tomato" src="{% static 'movies/images/tomato.svg' %}" > {{ detail.CriticScore }}%</td>
                     </tr>
+                    
+                   
                 
                 </tbody>
             {% endfor %}

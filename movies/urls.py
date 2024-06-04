@@ -13,5 +13,7 @@ urlpatterns = [
     path('request/discover-top-movies/', views.request_top_movies, name='request-top-movies-page'),
     path('request/discover-least-movies/', views.request_least_movies, name='request-least-movies-page'),
     path('request/discover-ordered-movies/', views.request_title_ordered, name='request-ordered-movies-page'),
+
+    path('add-movie/', views.add_movie, name='add-movie-page'),
     
 ]

@@ -186,3 +186,10 @@ def request_title_ordered(request):
         'order_movies':order_movies,
     }
     return render(request, 'movies/snippets/name-ordered-movies.html', context) 
+
+@login_required
+def add_movie(request):
+    if request.method == 'POST':
+        title = request.POST.get('movie')
+        print(title, 'has been received!')
+    return render(request, 'movies/snippets/least-movies.html')
