@@ -89,8 +89,8 @@ movie_titles = {}
 
 # these are my regexes we will zip them into a dictionary
 title_regex = re.compile(r'mediatitle="([^"]*)"')
-audience_score_regex = re.compile(r'audiencescore="(\d\d)"')
-critics_score_regex = re.compile(r'criticsscore="(\d\d)"')
+audience_score_regex = re.compile(r'audiencescore="(\d{1,3})?"') # the ? we can either have a score or not, i put it since the werbsite sometimes doesnt have any value and that fixed my problem it created with indexing incorrect values
+critics_score_regex = re.compile(r'criticsscore="(\d{1,3})?"') #the 1-3 means it can match 0, 1, 10, 100 or nothing, that fiexed everything
 movie_images_regex = re.compile(r'src="([^"]*)"')
 
 
@@ -103,8 +103,9 @@ def scrape_website(url):
     classes = soup.find_all('div', class_='discovery-tiles__wrap')
 
     all_title = title_regex.findall(str(classes))
-    all_audience_score = audience_score_regex.findall(str(classes))
+    all_audience_score = audience_score_regex.findall(str(classes)) 
     all_critics_score = critics_score_regex.findall(str(classes))
+
     all_imgs = movie_images_regex.findall(str(classes))
 
     #loop throgu all my titles, and enumerate and use the index to also access my scores and such
@@ -162,13 +163,13 @@ def request_least_movies(request):
     else:
         movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
     #this is gonna order from hiehgest values to least
-    order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore']))
+    order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore'], reverse=False))
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
     context = {
         'order_movies':order_movies,
     }
-    return render(request, 'movies/snippets/top-movies.html', context) 
+    return render(request, 'movies/snippets/least-movies.html', context) 
 
 @login_required
 def request_title_ordered(request):

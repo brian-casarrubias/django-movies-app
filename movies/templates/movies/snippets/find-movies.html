@@ -1,4 +1,5 @@
 
+{% load static %}
 <style>
 
     .add-movie{
@@ -14,6 +15,12 @@
     td{
         font-family: Arial, Helvetica, sans-serif;
         font-size: 18px;
+    }
+    .img-popcorn, .img-tomato{
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        margin-left: -30px;
     }
 
 @keyframes gradient-animation {
@@ -39,13 +46,14 @@
        
        
         <thead>
+             
             <button 
                 hx-get="{% url 'request-top-movies-page' %}"
                 hx-target="#container"
                 hx-swap="innerHTML"
                 id="js-toprated" 
-                class="toprated text-center"> 
-                Top rated
+                class="toprated btn text-center"> 
+                Top
             </button>
 
        
@@ -54,15 +62,15 @@
                 hx-target="#container"
                 hx-swap="innerHTML"
                 id="js-leastrated" 
-                class="leastrated text-center" >
-                Least rated
+                class="leastrated btn text-center" >
+                Least
             </button> 
             <button 
                 hx-get="{% url 'request-ordered-movies-page' %}"
                 hx-target="#container"
                 hx-swap="innerHTML"
                 id="js-leastrated" 
-                class="leastrated text-center" >
+                class="leastrated btn text-center" >
                 A - Z
             </button> 
             
@@ -75,8 +83,7 @@
             <th scope="col">Picture</th>
             <th scope="col"></th>
             <th scope="col">Audience Score</th>
-            <th scope="col">Critic Score</th>
-            <th scope="col">Add</th>
+            <th scope="col">Tomato Meter</th>
             </tr>
         </thead>
         
@@ -93,9 +100,8 @@
                     <th scope="row">{{ forloop.counter }}</th> <!-- this is a for loop counter in django, keeps track of the tieration-->
                     <td><img class="movie-thumbnail-find" src="{{ detail.MovieThumbnail }}" ></td>
                     <td>{{ movie }}</td>
-                    <td>{{ detail.AudienceScore }}</td>
-                    <td>{{ detail.CriticScore }}</td>
-                    <td><ion-icon class="add-movie text-center" name="add-circle-sharp"></ion-icon></td>
+                    <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}" >{{ detail.AudienceScore }}%</td>
+                    <td> <img class="img-tomato" src="{% static 'movies/images/tomato.svg' %}" > {{ detail.CriticScore }}%</td>
                     </tr>
                 
                 </tbody>

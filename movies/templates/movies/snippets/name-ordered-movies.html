@@ -38,8 +38,8 @@
                     hx-target="#container"
                     hx-swap="innerHTML"
                     id="js-toprated" 
-                    class="toprated text-center"> 
-                    Top rated
+                    class="toprated btn text-center"> 
+                    Top
                 </button>
 
    
@@ -48,15 +48,15 @@
                     hx-target="#container"
                     hx-swap="innerHTML"
                     id="js-leastrated" 
-                    class="leastrated text-center" >
-                    Least rated
+                    class="leastrated btn text-center" >
+                    Least
                 </button>
                 <button 
                     hx-get="{% url 'request-ordered-movies-page' %}"
                     hx-target="#container"
                     hx-swap="innerHTML"
                     id="js-leastrated" 
-                    class="leastrated text-center" >
+                    class="leastrated btn text-center" >
                     A - Z
                 </button> 
             <tr>
@@ -66,8 +66,6 @@
             <th scope="col">Picture</th>
             <th scope="col"></th>
             <th scope="col">Audience Score</th>
-            <th scope="col">Critic Score</th>
-            <th scope="col">Add</th>
             </tr>
         </thead>
         {% if order_movies.items %}
@@ -84,8 +82,7 @@
                     <td><img class="movie-thumbnail-find" src="{{ detail.MovieThumbnail }}" ></td>
                     <td>{{ movie }}</td>
                     <td>{{ detail.AudienceScore }}</td>
-                    <td>{{ detail.CriticScore }}</td>
-                    <td><ion-icon class="add-movie text-center" name="add-circle-sharp"></ion-icon></td>
+                  
                     </tr>
                 
                 </tbody>
