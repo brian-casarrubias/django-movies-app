@@ -1,4 +1,4 @@
-
+{% load static %}
 <style>
 
     .add-movie{
@@ -15,6 +15,12 @@
     td{
         font-family: Arial, Helvetica, sans-serif;
         font-size: 18px;
+    }
+    .img-popcorn, .img-tomato{
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        margin-left: -30px;
     }
   
 </style>
@@ -57,6 +63,7 @@
             <th scope="col">Picture</th>
             <th scope="col"></th>
             <th scope="col">Audience Score</th>
+            <th scope="col">Tomato Meter</th>
            
             </tr>
         </thead>
@@ -73,7 +80,8 @@
                     <th scope="row">{{ forloop.counter }}</th> <!-- this is a for loop counter in django, keeps track of the tieration-->
                     <td><img class="movie-thumbnail-find" src="{{ detail.MovieThumbnail }}" ></td>
                     <td>{{ movie }}</td>
-                    <td>{{ detail.AudienceScore }}</td>
+                    <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}" >{{ detail.AudienceScore }}%</td>
+                    <td> <img class="img-tomato" src="{% static 'movies/images/tomato.svg' %}" > {{ detail.CriticScore }}%</td>
                     </tr>
                 
                 </tbody>
