@@ -86,12 +86,28 @@
                         </div>
                         
                     </div>
-                    <tr>
-                    <th scope="row">{{ forloop.counter }}</th> <!-- this is a for loop counter in django, keeps track of the tieration-->
-                    <td><img class="movie-thumbnail-find" src="{{ detail.MovieThumbnail }}" ></td>
-                    <td>{{ movie }}</td>
-                    <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}" >{{ detail.AudienceScore }}%</td>
-                    <td> <img class="img-tomato" src="{% static 'movies/images/tomato.svg' %}" > {{ detail.CriticScore }}%</td>
+                    <tr
+                        hx-post="{% url 'add-movie-page' %}"
+                        hx-confirm="Do you want to add '{{ movie }}' to your list?"
+                        hx-trigger="click" 
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' 
+                        hx-include="[name='movie-{{ forloop.counter }}']"
+                        hx-indicator="#js-loading-spinner">
+                        <!-- we needed to add the loop counter beacuse all the inputs have the samne name
+                        so when we tried to access in the view, it would return the last value always-->
+                        <input type="hidden" name="movie-{{ forloop.counter }}" value="{{ movie }}">
+                    
+                        
+                        <th scope="row">{{ forloop.counter }}</th> <!-- this is a for loop counter in django, keeps track of the tieration-->
+                        <td>
+                            <img class="movie-thumbnail-find" src="{{ detail.MovieThumbnail }}">
+                        </td>
+                        <td>
+                         
+                            {{ movie }}
+                        </td>
+                        <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}">{{ detail.AudienceScore }}%</td>
+                        <td><img class="img-tomato" src="{% static 'movies/images/tomato.svg' %}">{{ detail.CriticScore }}%</td>
                     </tr>
                 
                 </tbody>

@@ -191,6 +191,8 @@ def request_title_ordered(request):
 @login_required
 def add_movie(request):
     if request.method == 'POST':
+        # were looping because we added a counter to the name of the input in the HTML, therefore we dont know what the acrtualy
+        #value is so were looping through all until we find it
         for key in request.POST.keys():
             if key.startswith('movie-'):
                 title = request.POST.get(key)
