@@ -91,12 +91,16 @@
                         hx-confirm="Do you want to add '{{ movie }}' to your list?"
                         hx-trigger="click" 
                         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' 
-                        hx-include="[name='movie-{{ forloop.counter }}']"
+                        hx-include="[name='movie-{{ forloop.counter }}'], [name='audience-{{ forloop.counter }}'] , [name='critic-{{ forloop.counter }}'] , [name='url-{{ forloop.counter }}']"
                         hx-indicator="#js-loading-spinner">
                         <!-- we needed to add the loop counter beacuse all the inputs have the samne name
-                        so when we tried to access in the view, it would return the last value always-->
+                        so when we tried to access in the view, it would return the last value always
+                        values in the include, the docs say its for adding additional values to the ajax request-->
                         <input type="hidden" name="movie-{{ forloop.counter }}" value="{{ movie }}">
-                    
+                        <input type="hidden" name="audience-{{ forloop.counter }}" value="{{ detail.AudienceScore }}">
+                        <input type="hidden" name="critic-{{ forloop.counter }}" value="{{ detail.CriticScore }}">
+                        <input type="hidden" name="url-{{ forloop.counter }}" value="{{ detail.MovieThumbnail }}">
+                            
                         
                         <th scope="row">{{ forloop.counter }}</th> <!-- this is a for loop counter in django, keeps track of the tieration-->
                         <td>

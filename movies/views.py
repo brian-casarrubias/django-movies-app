@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 #safety
 from django.views.decorators.debug import sensitive_post_parameters, sensitive_variables
 import time
+#optimization
+from django.urls import reverse_lazy
 
 #these are imports for websecraping
 
@@ -17,6 +19,9 @@ import os
 import threading
 import lxml
 from bs4 import BeautifulSoup
+
+#our models
+from . models import Profile, Movie, User
 
 
 @sensitive_post_parameters('username', 'password') # these variables will be treated in a special way, for example if were logging, these variables wont be exposed
@@ -35,7 +40,7 @@ def home(request):
             try:
                 login(request, user)
                 messages.success(request, f'{user} has logged in!')
-                return redirect('home-page')
+                return reverse_lazy('home-page')
             except:
                 messages.error(request, 'Could not login, please check again!')
                 
@@ -54,7 +59,7 @@ def register(request):
             return redirect('home-page')
         else:
             messages.error(request, 'Could not create account, please try again!')
-            return redirect('register-page')
+            return reverse_lazy('register-page')
     else:
         form = UserRegisterForm()
 
@@ -68,7 +73,7 @@ def register(request):
 def logoutUser(request):
     logout(request) # logout the user
     messages.success(request, 'You have been logged out!')        
-    return redirect('home-page')      
+    return reverse_lazy('home-page')      
 
 
 
@@ -190,13 +195,46 @@ def request_title_ordered(request):
 
 @login_required
 def add_movie(request):
+  
+    movie_creation = []
     if request.method == 'POST':
+       
+        
         # were looping because we added a counter to the name of the input in the HTML, therefore we dont know what the acrtualy
         #value is so were looping through all until we find it
+        #im adding these values to an empty list i initialized above
         for key in request.POST.keys():
             if key.startswith('movie-'):
-                title = request.POST.get(key)
-                print(title, 'has been received!')
-                return HttpResponse({'message': f'{title} has been added to your list!'})
+                movie_creation.append(request.POST.get(key))
+            if key.startswith('audience-'):
+                movie_creation.append(request.POST.get(key))     
+            if key.startswith('critic-'):
+                movie_creation.append(request.POST.get(key))
+            if key.startswith('url-'):
+                movie_creation.append(request.POST.get(key))
         
-    return render(request, 'movies/snippets/least-movies.html')
+        #now were going to initialize variables to create the movie for the profile movies list
+        user = request.user
+        profile = user.profile
+        title = movie_creation[0]
+        audience_score = int(movie_creation[1])
+        critic_score = int(movie_creation[2])
+        image_url = movie_creation[3]
+
+       
+
+        #creating thje object, we need to check that there are no duplicate title values
+        #here im filtering the movie based on matching profile and movie title, and getting the first value
+        #if it is empty that means there are no duplicates, so create/add a movie
+        #if it is not empty, then we DONT want to add/ create a movie because im not allowing duplicates
+        current_movies = Movie.objects.filter(profile=profile, title=title).first()
+        
+        if current_movies == None:
+            Movie.objects.create(profile=profile, title=title,image_url=image_url, audience_score=audience_score, critic_score=critic_score )
+        else:
+            return HttpResponse('<script> alert("This movie is already within your movies list!"); </script>')
+        
+       
+           
+    # return render(request, 'movies/snippets/least-movies.html')
+    return HttpResponse(status=201)
