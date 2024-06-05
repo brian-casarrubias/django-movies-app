@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from movies.forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout # im using this so i can authenticate via the home view without the use of class based views, im doing it manually
@@ -123,11 +123,12 @@ def scrape_website(url):
 @login_required
 def request_discover_movies(request):
     #what ever is returned (dictionary)
-    movie_titles = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
+    movie_titles = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=1')
     
     context = {
         'movie_titles':movie_titles,
     }
+  
     # how to iterate over the dictionary
     # for movie, details in movie_titles.items():
     # print(movie, details['AudienceScore'], details['CriticScore'])
@@ -190,6 +191,10 @@ def request_title_ordered(request):
 @login_required
 def add_movie(request):
     if request.method == 'POST':
-        title = request.POST.get('movie')
-        print(title, 'has been received!')
+        for key in request.POST.keys():
+            if key.startswith('movie-'):
+                title = request.POST.get(key)
+                print(title, 'has been received!')
+                return HttpResponse({'message': f'{title} has been added to your list!'})
+        
     return render(request, 'movies/snippets/least-movies.html')
