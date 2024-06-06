@@ -8,7 +8,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=155, null=True, blank=True)
-    has_discovered_before = models.BooleanField(default=False, null=True, blank=True)
+   
     
     ## add profile image later maybe!!!!
     # profile_image = models.ImageField()
