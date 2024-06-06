@@ -126,14 +126,14 @@ def scrape_website(url):
     for index, score in enumerate(movie_scores):
         if index % 2 == 0:
             if type(score) == int:
-                audience_scores.append(score)
-            else:
-                audience_scores.append(0)
-        else:
-            if type(score) == int:
                 critic_scores.append(score)
             else:
                 critic_scores.append(0)
+        else:
+            if type(score) == int:
+                audience_scores.append(score)
+            else:
+                audience_scores.append(0)
  
 
     all_title = title_regex.findall(str(classes))
