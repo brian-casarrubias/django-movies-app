@@ -94,8 +94,12 @@ movie_titles = {}
 
 # these are my regexes we will zip them into a dictionary
 title_regex = re.compile(r'mediatitle="([^"]*)"')
-audience_score_regex = re.compile(r'audiencescore="(\d{1,3})?"') # the ? we can either have a score or not, i put it since the werbsite sometimes doesnt have any value and that fixed my problem it created with indexing incorrect values
-critics_score_regex = re.compile(r'criticsscore="(\d{1,3})?"') #the 1-3 means it can match 0, 1, 10, 100 or nothing, that fiexed everything
+#new regex
+#this solves the issue when there are no characters/the score is blank!!
+movie_scores_regex = re.compile(r'theme="medium"> (\d{2,3}| )?')
+#belo were changed on their website so its no longer useful -.-
+# audience_score_regex = re.compile(r'audiencescore="(\d{1,3})?"') # the ? we can either have a score or not, i put it since the werbsite sometimes doesnt have any value and that fixed my problem it created with indexing incorrect values
+# critics_score_regex = re.compile(r'criticsscore="(\d{1,3})?"') #the 1-3 means it can match 0, 1, 10, 100 or nothing, that fiexed everything
 movie_images_regex = re.compile(r'src="([^"]*)"')
 
 
@@ -106,21 +110,44 @@ def scrape_website(url):
     soup = BeautifulSoup(source, 'lxml')
 
     classes = soup.find_all('div', class_='discovery-tiles__wrap')
+      ############new find all we are using to 
+    classes_scores = soup.find_all('score-pairs-deprecated')
+     ######new vareiable this is a list of all the values im using########
+    #what im trying to do is have all the even as critic, and odd as the audience 
+    movie_scores = movie_scores_regex.findall(str(classes_scores))
+
+     #converting the values to int because below were calculating so we need them to be in
+    movie_scores = [int(movie) if movie != '' else movie for movie in movie_scores] 
+    audience_scores = []
+    critic_scores = []
+
+    # we need to index all these so that we can properly display them
+    # im also checking if its int because in the sorted part, i cant sort int and str, this fixed the error
+    for index, score in enumerate(movie_scores):
+        if index % 2 == 0:
+            if type(score) == int:
+                audience_scores.append(score)
+            else:
+                audience_scores.append(0)
+        else:
+            if type(score) == int:
+                critic_scores.append(score)
+            else:
+                critic_scores.append(0)
+ 
 
     all_title = title_regex.findall(str(classes))
-    all_audience_score = audience_score_regex.findall(str(classes)) 
-    all_critics_score = critics_score_regex.findall(str(classes))
-
     all_imgs = movie_images_regex.findall(str(classes))
 
     #loop throgu all my titles, and enumerate and use the index to also access my scores and such
 
     for index, title in enumerate(all_title):
         movie_titles[title] = {
-            'AudienceScore':all_audience_score[index] if index < len(all_audience_score) else str(0),
-            'CriticScore':all_critics_score[index] if index < len(all_critics_score) else str(0),
+            'AudienceScore':audience_scores[index] if index < len(audience_scores) else str(0) ,
+            'CriticScore':critic_scores[index] if index < len(critic_scores) else str(0) ,
             'MovieThumbnail':all_imgs[index] if index < len(all_imgs) else str(0),
         }
+   
     return movie_titles
 
 # this is the snippet to find movies, so this is where im going to add the 
@@ -133,16 +160,14 @@ def request_discover_movies(request):
     context = {
         'movie_titles':movie_titles,
     }
-  
-    # how to iterate over the dictionary
-    # for movie, details in movie_titles.items():
-    # print(movie, details['AudienceScore'], details['CriticScore'])
+
         
     return render(request, 'movies/snippets/find-movies.html', context) 
 
 @login_required
 def request_top_movies(request):
     start_timer = time.perf_counter()
+ 
 
     if movie_titles != {}:
         movies = movie_titles
@@ -150,7 +175,7 @@ def request_top_movies(request):
     else:
         movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=1')
     #this is gonna order from hiehgest values to least
-    order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore'], reverse=True))
+    order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore' ], reverse=True))
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
     context = {
