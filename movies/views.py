@@ -158,7 +158,7 @@ def scrape_website(url):
 @login_required
 def request_discover_movies(request):
     #what ever is returned (dictionary)
-    order_movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=1')
+    order_movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
     # pprint.pprint(order_movies)
   
     profile = request.user.profile
@@ -190,7 +190,7 @@ def request_top_movies(request):
         movies = movie_titles
        
     else:
-        movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=1')
+        movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
     #this is gonna order from hiehgest values to least
     order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore' ], reverse=True))
     end_timer = time.perf_counter()
@@ -221,7 +221,7 @@ def request_least_movies(request):
     if movie_titles != {}:
         movies = movie_titles
     else:
-        movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=1')
+        movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
     #this is gonna order from hiehgest values to least
     order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore'], reverse=False))
     end_timer = time.perf_counter()
@@ -250,7 +250,7 @@ def request_title_ordered(request):
     if movie_titles != {}:
         movies = movie_titles
     else:
-        movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=1')
+        movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
 
     order_movies = dict(sorted(movies.items(), key= lambda x: x[0], reverse=False))
     end_timer = time.perf_counter()
