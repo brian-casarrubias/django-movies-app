@@ -223,8 +223,7 @@ def add_movie(request):
   
     movie_creation = []
     if request.method == 'POST':
-       
-        
+
         # were looping because we added a counter to the name of the input in the HTML, therefore we dont know what the acrtualy
         #value is so were looping through all until we find it
         #im adding these values to an empty list i initialized above
@@ -239,14 +238,12 @@ def add_movie(request):
                 movie_creation.append(request.POST.get(key))
         
         #now were going to initialize variables to create the movie for the profile movies list
-        user = request.user
-        profile = user.profile
+        profile = request.user.profile
         title = movie_creation[0]
         audience_score = int(movie_creation[1])
         critic_score = int(movie_creation[2])
         image_url = movie_creation[3]
 
-       
 
         #creating thje object, we need to check that there are no duplicate title values
         #here im filtering the movie based on matching profile and movie title, and getting the first value
@@ -269,9 +266,8 @@ def add_movie(request):
 
 @login_required
 def my_movies(request):
-    user = request.user
-    profile = user
-    movies = Movie.objects.select_related('profile')
+    profile = request.user.profile
+    movies = Movie.objects.select_related('profile').filter(profile=profile)
     
     context = {
         'movies':movies,
@@ -280,10 +276,11 @@ def my_movies(request):
     
     return render(request, 'movies/my-movies.html', context)
 
+@login_required
 def my_movies_snippet(request):
-    user = request.user
-    profile = user
-    movies = Movie.objects.select_related('profile')
+   
+    profile = request.user.profile
+    movies = Movie.objects.select_related('profile').filter(profile=profile)
     
     context = {
         'movies':movies,
@@ -293,7 +290,7 @@ def my_movies_snippet(request):
 
 @login_required
 def complete_movie(request, pk):
-    print('readhed')
+    
     #lets retrieb the profile
     profile = request.user.profile
     #now lets retirve the movie with the pk they sent
@@ -309,10 +306,28 @@ def complete_movie(request, pk):
     #let us save now
     movie.save()
     #now lets query alll the movies again so that we get the updated version
-    movies = Movie.objects.select_related('profile')
+    movies = Movie.objects.select_related('profile').filter(profile=profile)
 
     context = {
         'movies':movies,
     }
 
+    return render(request, 'movies/snippets/my-movies-snippet.html', context)
+
+
+def delete_movie(request, pk):
+    profile = request.user.profile
+    movie = get_object_or_404(Movie, pk=pk)
+
+    if movie.profile == profile:
+        movie.delete() # i dont think we need to save for deleting
+    else:
+        return HttpResponse('<h1>You DONT have access to this!! leave NOW!! </h1>')
+    
+    movies = Movie.objects.select_related('profile').filter(profile=profile)
+
+    context = {
+        'movies':movies,
+    }
+    
     return render(request, 'movies/snippets/my-movies-snippet.html', context)

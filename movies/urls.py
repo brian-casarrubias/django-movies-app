@@ -20,4 +20,6 @@ urlpatterns = [
     path('my-movies/', views.my_movies, name='my-movies-page'),
 
     path('complete-movie/<int:pk>/', views.complete_movie, name='complete-movie-page'),
+
+    path('delete-movie/<int:pk>/', views.delete_movie, name='delete-movie-page'),
 ]

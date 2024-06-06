@@ -75,7 +75,7 @@
             
             <th scope="col">Picture</th>
             <th scope="col"></th>
-            <th scope="col">Remove</th>
+            <th scope="col">Delete</th>
             <th scope="col">Status</th>
             </tr>
         </thead>
@@ -85,42 +85,35 @@
                
                 <tbody>
                     {% if not movie.completed %}
-                        <tr
-                        hx-get="{% url 'complete-movie-page' movie.pk  %}"
-                        hx-target="#container"
-                        hx-swap="innerHTML"
-                        >
+                        <tr>
 
                             <td>
                                 <img class="movie-thumbnail-find" src="{{ movie.image_url }}">
                             </td>
-                            <td>
+                            <td hx-get="{% url 'complete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML">
                             
                                 {{ movie.title}}
                             </td>
                             <!-- <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}">{{ movie.audience_score }}%</td> -->
-                            <td> <div style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
-                            <td style="background-color: rgb(175, 21, 21);" > <div style="font-size: 30px;" class="badge rounded-pill text-bg-error">X</div></td>
+                            <td > <div  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-delete="{% url 'delete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" hx-confirm="Are you sure you want to delete?" style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
+                            <td  style="background-color: rgb(175, 21, 21);" > <div hx-get="{% url 'complete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" style="font-size: 30px;" class="badge rounded-pill text-bg-error">X</div></td>
                         </tr>
                     {% else %}
-                        <tr style="text-decoration: line-through; color: green;" 
-                            hx-get="{% url 'complete-movie-page' movie.pk %}"
-                            hx-target="#container"
-                            hx-swap="innerHTML"
-                        >
+                        <tr style="text-decoration: line-through; color: green;" >
+                          
                         
 
                             <td>
                                 <img class="movie-thumbnail-find" src="{{ movie.image_url }}">
                             </td>
-                            <td style="background-color: green;" >
+                            <td hx-get="{% url 'complete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" style="background-color: green;" >
                             
                                 {{ movie.title}}
                             </td>
                             <!-- <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}">{{ movie.audience_score }}%</td> -->
                             <!-- <td><img class="img-tomato" src="{% static 'movies/images/tomato.svg' %}">{{ detail.CriticScore }}%</td> -->
-                            <td style="background-color: green;" > <div style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
-                            <td style="background-color: green;" > <div style="font-size: 25px; background-color: white;" class="badge rounded-pill text-bg-success">✔</div></td>
+                            <td style="background-color: green;" > <div hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-delete="{% url 'delete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" hx-confirm="Are you sure you want to delete?" style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
+                            <td style="background-color: green;" > <div hx-get="{% url 'complete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" style="font-size: 25px; background-color: white;" class="badge rounded-pill text-bg-success">✔</div></td>
 
                         </tr>
 
