@@ -16,4 +16,8 @@ urlpatterns = [
 
     path('add-movie/', views.add_movie, name='add-movie-page'),
     
+
+    path('my-movies/', views.my_movies, name='my-movies-page'),
+
+    path('complete-movie/<int:pk>/', views.complete_movie, name='complete-movie-page'),
 ]

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from movies.forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout # im using this so i can authenticate via the home view without the use of class based views, im doing it manually
@@ -263,3 +263,56 @@ def add_movie(request):
            
     # return render(request, 'movies/snippets/least-movies.html')
     return HttpResponse(status=201)
+
+
+
+
+@login_required
+def my_movies(request):
+    user = request.user
+    profile = user
+    movies = Movie.objects.select_related('profile')
+    
+    context = {
+        'movies':movies,
+        
+    }
+    
+    return render(request, 'movies/my-movies.html', context)
+
+def my_movies_snippet(request):
+    user = request.user
+    profile = user
+    movies = Movie.objects.select_related('profile')
+    
+    context = {
+        'movies':movies,
+        
+    }
+    return render(request, 'movies/snippets/my-movies-snippet.html', context)
+
+@login_required
+def complete_movie(request, pk):
+    print('readhed')
+    #lets retrieb the profile
+    profile = request.user.profile
+    #now lets retirve the movie with the pk they sent
+    movie = get_object_or_404(Movie, pk=pk)
+
+    #first were gonna check that the current profile matches the profile associated with the movie, or else this would give others
+    # permission to do stuff with you movie if they had the link!
+    if movie.profile == profile:
+        if not movie.completed:
+            movie.completed = True
+        else:
+            movie.completed = False
+    #let us save now
+    movie.save()
+    #now lets query alll the movies again so that we get the updated version
+    movies = Movie.objects.select_related('profile')
+
+    context = {
+        'movies':movies,
+    }
+
+    return render(request, 'movies/snippets/my-movies-snippet.html', context)

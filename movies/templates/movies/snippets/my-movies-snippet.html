@@ -1,0 +1,138 @@
+
+{% load static %}
+<style>
+
+    .add-movie{
+        color: green;
+        width: 55px;
+        height: 55px;
+    }
+    .movie-thumbnail-find{
+        width: 75px;
+        height: 75px;
+        object-fit: cover;
+    }
+    td, th{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+
+    }
+    .img-popcorn, .img-tomato{
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        margin-left: -30px;
+    }
+    
+ 
+
+  
+</style>
+
+    
+   
+    {% if movies %}
+    <table class="table table-striped table-hover" style="cursor: pointer; width: 100%!important;">
+        <div class="container">
+            <h1>My movies</h1>
+        </div>
+
+        <thead>
+             
+            <button 
+                hx-get="{% url 'request-top-movies-page' %}"
+                hx-target="#container"
+                hx-swap="innerHTML"
+                id="js-toprated" 
+                class="toprated btn text-center"> 
+                Top
+            </button>
+
+       
+            <button 
+                hx-get="{% url 'request-least-movies-page' %}"
+                hx-target="#container"
+                hx-swap="innerHTML"
+                id="js-leastrated" 
+                class="leastrated btn text-center" >
+                Least
+            </button> 
+            <button 
+                hx-get="{% url 'request-ordered-movies-page' %}"
+                hx-target="#container"
+                hx-swap="innerHTML"
+                id="js-leastrated" 
+                class="leastrated btn text-center" >
+                A - Z
+            </button> 
+            
+
+            <tr>
+              
+           
+                <!-- forloop.counter -->
+            
+            <th scope="col">Picture</th>
+            <th scope="col"></th>
+            <th scope="col">Remove</th>
+            <th scope="col">Status</th>
+            </tr>
+        </thead>
+        
+        
+            {% for movie in movies %}
+               
+                <tbody>
+                    {% if not movie.completed %}
+                        <tr
+                        hx-get="{% url 'complete-movie-page' movie.pk  %}"
+                        hx-target="#container"
+                        hx-swap="innerHTML"
+                        >
+
+                            <td>
+                                <img class="movie-thumbnail-find" src="{{ movie.image_url }}">
+                            </td>
+                            <td>
+                            
+                                {{ movie.title}}
+                            </td>
+                            <!-- <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}">{{ movie.audience_score }}%</td> -->
+                            <td> <div style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
+                            <td style="background-color: rgb(175, 21, 21);" > <div style="font-size: 30px;" class="badge rounded-pill text-bg-error">X</div></td>
+                        </tr>
+                    {% else %}
+                        <tr style="text-decoration: line-through; color: green;" 
+                            hx-get="{% url 'complete-movie-page' movie.pk %}"
+                            hx-target="#container"
+                            hx-swap="innerHTML"
+                        >
+                        
+
+                            <td>
+                                <img class="movie-thumbnail-find" src="{{ movie.image_url }}">
+                            </td>
+                            <td style="background-color: green;" >
+                            
+                                {{ movie.title}}
+                            </td>
+                            <!-- <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}">{{ movie.audience_score }}%</td> -->
+                            <!-- <td><img class="img-tomato" src="{% static 'movies/images/tomato.svg' %}">{{ detail.CriticScore }}%</td> -->
+                            <td style="background-color: green;" > <div style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
+                            <td style="background-color: green;" > <div style="font-size: 25px; background-color: white;" class="badge rounded-pill text-bg-success">✔</div></td>
+
+                        </tr>
+
+                    {% endif %}
+                       
+
+                
+                </tbody>
+            {% endfor %}
+        {% else %}
+                <h1>No movies!</h1>
+        {% endif %}
+    </table>
+
+ 
