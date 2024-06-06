@@ -216,14 +216,10 @@
 }
 /* ---------------this is the discover movies section now----------- */
 
-.container{
-  margin-top: 200px;
-  
-}
 
 /* the find movies button on the discover movies section */
 .find-movies-btn {
-  display: block;  /* Ensure the anchor behaves like a button, now hover worrks!!! */
+  display: block;  /*  now hover worrks!!! */
   background: linear-gradient(45deg, #ff6f61, #d9a7c7);
   animation: gradient-animation 4s ease infinite;
   color: white;

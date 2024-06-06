@@ -30,49 +30,20 @@
   
 </style>
 
-    
+ 
    
     {% if movies %}
     <table class="table table-striped table-hover" style="cursor: pointer; width: 100%!important;">
         <div class="container">
-            <h1>My movies</h1>
+            <h1>{{ user.profile }}'s movies</h1>
         </div>
 
         <thead>
              
-            <button 
-                hx-get="{% url 'request-top-movies-page' %}"
-                hx-target="#container"
-                hx-swap="innerHTML"
-                id="js-toprated" 
-                class="toprated btn text-center"> 
-                Top
-            </button>
-
-       
-            <button 
-                hx-get="{% url 'request-least-movies-page' %}"
-                hx-target="#container"
-                hx-swap="innerHTML"
-                id="js-leastrated" 
-                class="leastrated btn text-center" >
-                Least
-            </button> 
-            <button 
-                hx-get="{% url 'request-ordered-movies-page' %}"
-                hx-target="#container"
-                hx-swap="innerHTML"
-                id="js-leastrated" 
-                class="leastrated btn text-center" >
-                A - Z
-            </button> 
-            
+   
 
             <tr>
-              
-           
-                <!-- forloop.counter -->
-            
+   
             <th scope="col">Picture</th>
             <th scope="col"></th>
             <th scope="col">Delete</th>
@@ -88,14 +59,14 @@
                         <tr>
 
                             <td>
-                                <img class="movie-thumbnail-find" src="{{ movie.image_url }}">
+                                <img style="width: 75px; height: 75px; object-fit: cover;" class="movie-thumbnail-find" src="{{ movie.image_url }}">
                             </td>
                             <td hx-get="{% url 'complete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML">
                             
                                 {{ movie.title}}
                             </td>
                             <!-- <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}">{{ movie.audience_score }}%</td> -->
-                            <td > <div  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-delete="{% url 'delete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" hx-confirm="Are you sure you want to delete?" style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
+                            <td > <div  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-delete="{% url 'delete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" hx-confirm="Are you sure you want to delete '{{ movie }}'?" style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
                             <td  style="background-color: rgb(175, 21, 21);" > <div hx-get="{% url 'complete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" style="font-size: 30px;" class="badge rounded-pill text-bg-error">X</div></td>
                         </tr>
                     {% else %}
@@ -112,7 +83,7 @@
                             </td>
                             <!-- <td><img class="img-popcorn text-center" src="{% static 'movies/images/popcorn.svg' %}">{{ movie.audience_score }}%</td> -->
                             <!-- <td><img class="img-tomato" src="{% static 'movies/images/tomato.svg' %}">{{ detail.CriticScore }}%</td> -->
-                            <td style="background-color: green;" > <div hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-delete="{% url 'delete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" hx-confirm="Are you sure you want to delete?" style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
+                            <td style="background-color: green;"> <div  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-delete="{% url 'delete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" hx-confirm="Are you sure you want to delete '{{ movie }}'?" style="font-size: 20px;" class="badge rounded-pill text-bg-danger">X</div></td>
                             <td style="background-color: green;" > <div hx-get="{% url 'complete-movie-page' movie.pk %}" hx-target="#container" hx-swap="innerHTML" style="font-size: 25px; background-color: white;" class="badge rounded-pill text-bg-success">✔</div></td>
 
                         </tr>
@@ -127,5 +98,4 @@
                 <h1>No movies!</h1>
         {% endif %}
     </table>
-
- 
+  
