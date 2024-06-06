@@ -22,7 +22,7 @@ class Movie(models.Model):
     title = models.CharField(max_length=155, null=True, blank=False)                        #so profile.movies.all() etc!!
     image_url = models.CharField(max_length=255, null=True, blank=False)
     completed = models.BooleanField(default=False, null=True, blank=False)
-    slug = models.SlugField(unique=True, null=True, blank=True, max_length=255)
+    slug = models.SlugField(null=True, blank=True, max_length=255)
 
     audience_score = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(100)],

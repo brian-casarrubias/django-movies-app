@@ -155,10 +155,10 @@ def scrape_website(url):
 @login_required
 def request_discover_movies(request):
     #what ever is returned (dictionary)
-    movie_titles = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=2')
+    order_movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=2')
     
     context = {
-        'movie_titles':movie_titles,
+        'order_movies':order_movies,
     }
 
         
@@ -182,7 +182,7 @@ def request_top_movies(request):
         'order_movies':order_movies,
     }
     
-    return render(request, 'movies/snippets/top-movies.html', context) 
+    return render(request, 'movies/snippets/find-movies.html', context) 
 
 
 @login_required
@@ -200,7 +200,7 @@ def request_least_movies(request):
     context = {
         'order_movies':order_movies,
     }
-    return render(request, 'movies/snippets/least-movies.html', context) 
+    return render(request, 'movies/snippets/find-movies.html', context) 
 
 @login_required
 def request_title_ordered(request):
@@ -216,7 +216,7 @@ def request_title_ordered(request):
     context = {
         'order_movies':order_movies,
     }
-    return render(request, 'movies/snippets/name-ordered-movies.html', context) 
+    return render(request, 'movies/snippets/find-movies.html', context) 
 
 @login_required
 def add_movie(request):
@@ -256,6 +256,7 @@ def add_movie(request):
         else:
             return HttpResponse('<script> alert("This movie is already within your movies list!"); </script>')
         
+
        
            
     # return render(request, 'movies/snippets/least-movies.html')
@@ -267,7 +268,7 @@ def add_movie(request):
 @login_required
 def my_movies(request):
     profile = request.user.profile
-    movies = Movie.objects.select_related('profile').filter(profile=profile)
+    movies = Movie.objects.select_related('profile').filter(profile=profile).order_by('-completed','title')
     
     context = {
         'movies':movies,
@@ -280,7 +281,7 @@ def my_movies(request):
 def my_movies_snippet(request):
    
     profile = request.user.profile
-    movies = Movie.objects.select_related('profile').filter(profile=profile)
+    movies = Movie.objects.select_related('profile').filter(profile=profile).order_by('-completed','title')
     
     context = {
         'movies':movies,
@@ -306,7 +307,7 @@ def complete_movie(request, pk):
     #let us save now
     movie.save()
     #now lets query alll the movies again so that we get the updated version
-    movies = Movie.objects.select_related('profile').filter(profile=profile)
+    movies = Movie.objects.select_related('profile').filter(profile=profile).order_by('-completed','title')
 
     context = {
         'movies':movies,
@@ -324,7 +325,7 @@ def delete_movie(request, pk):
     else:
         return HttpResponse('<h1>You DONT have access to this!! leave NOW!! </h1>')
     
-    movies = Movie.objects.select_related('profile').filter(profile=profile)
+    movies = Movie.objects.select_related('profile').filter(profile=profile).order_by('-completed','title')
 
     context = {
         'movies':movies,
