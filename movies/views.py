@@ -10,7 +10,7 @@ import time
 from django.urls import reverse_lazy
 
 #these are imports for websecraping
-
+import pprint
 import re
 import time
 import concurrent.futures # maybe use
@@ -121,10 +121,13 @@ def scrape_website(url):
     audience_scores = []
     critic_scores = []
 
-    # we need to index all these so that we can properly display them
+    # we need to index all these so that we can properly display them. Since the list is like this [1, 1, 2, 2, 3, 3]
+    #these are pairs, so to get the correct ones im getting all the even nums and appending them to audience score list
+    #and the odds im paring them to the critic, that way when i use lets say index 1 for both critic audience they will be paired toegther
     # im also checking if its int because in the sorted part, i cant sort int and str, this fixed the error
     for index, score in enumerate(movie_scores):
         if index % 2 == 0:
+            #some values are empty, rarely but if it is it gets added in my list as empty string, so if i get that i just say 0
             if type(score) == int:
                 critic_scores.append(score)
             else:
@@ -155,7 +158,21 @@ def scrape_website(url):
 @login_required
 def request_discover_movies(request):
     #what ever is returned (dictionary)
-    order_movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=2')
+    order_movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=1')
+    # pprint.pprint(order_movies)
+  
+    profile = request.user.profile
+    #were gonna filter out even further, by only displaying the movies that are not in our current movies list, cuz why would peiople want to see the movie if theyh already have it
+    try:
+        my_movies = Movie.objects.filter(profile=profile)
+        for movie in my_movies:
+            if movie.title in order_movies:
+                del order_movies[movie.title]
+            else:
+                continue
+    except:
+        raise Exception('An error occured')
+        
     
     context = {
         'order_movies':order_movies,
@@ -178,6 +195,18 @@ def request_top_movies(request):
     order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore' ], reverse=True))
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
+
+    profile = request.user.profile
+    #were gonna filter out even further, by only displaying the movies that are not in our current movies list, cuz why would peiople want to see the movie if theyh already have it
+    try:
+        my_movies = Movie.objects.filter(profile=profile)
+        for movie in my_movies:
+            if movie.title in order_movies:
+                del order_movies[movie.title]
+            else:
+                continue
+    except:
+        raise Exception('An error occured')
     context = {
         'order_movies':order_movies,
     }
@@ -197,6 +226,19 @@ def request_least_movies(request):
     order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore'], reverse=False))
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
+
+    profile = request.user.profile
+    #were gonna filter out even further, by only displaying the movies that are not in our current movies list, cuz why would peiople want to see the movie if theyh already have it
+    try:
+        my_movies = Movie.objects.filter(profile=profile)
+        for movie in my_movies:
+            if movie.title in order_movies:
+                del order_movies[movie.title]
+            else:
+                continue
+    except:
+        raise Exception('An error occured')
+    
     context = {
         'order_movies':order_movies,
     }
@@ -213,6 +255,18 @@ def request_title_ordered(request):
     order_movies = dict(sorted(movies.items(), key= lambda x: x[0], reverse=False))
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
+
+    profile = request.user.profile
+    #were gonna filter out even further, by only displaying the movies that are not in our current movies list, cuz why would peiople want to see the movie if theyh already have it
+    try:
+        my_movies = Movie.objects.filter(profile=profile)
+        for movie in my_movies:
+            if movie.title in order_movies:
+                del order_movies[movie.title]
+            else:
+                continue
+    except:
+        raise Exception('An error occured')
     context = {
         'order_movies':order_movies,
     }
