@@ -95,8 +95,9 @@
                 </tbody>
             {% endfor %}
         {% else %}
-        <div style="margin-top: 200px;">
+        <div style="margin-top: 100px;">
              <h1 style="font-size: 35px; font-family: Arial, Helvetica, sans-serif;" >No movies!</h1>
+             <img  style="width: 300px; height: 300px; object-fit: cover;" src="{% static 'movies/images/racoon.webp' %}" >
                 <div style="margin-top: 50px;" class="container text-center">
                     <!-- <button class="discover-btn" >Discover Movies Now!!</button> -->
                     <a id="discover-btn" class="discover-btn"  href="{% url 'discover-movies-page' %}" >Find movies now!!</a>
