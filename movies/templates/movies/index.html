@@ -1,3 +1,4 @@
+{% load cache %}
 {% load widget_tweaks %}
 {% load static %}
 
@@ -113,7 +114,9 @@
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav ms-auto">
                               <li class="nav-item">
+                                {% cache 60 sidebar request.user.username %}
                                 <a class="nav-link" href="#">{{ user }}</a>
+                                {% endcache %}
                               </li>
 
                               <li class="nav-item">

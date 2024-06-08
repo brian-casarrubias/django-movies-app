@@ -23,6 +23,10 @@ from bs4 import BeautifulSoup
 #our models
 from . models import Profile, Movie, User
 
+#cahcing stuff
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache #this is going to be used to cache the webscraping result so we dont have to keep making requests... speeding up the process
+
 
 @sensitive_post_parameters('username', 'password') # these variables will be treated in a special way, for example if were logging, these variables wont be exposed
 def home(request):
@@ -78,6 +82,7 @@ def logoutUser(request):
 
 
 ########################## main sections of the application#######################
+@cache_page(60 * 15)
 @login_required
 def discover_movies(request):
     profile = request.user.profile if request.user.is_authenticated else None
@@ -89,7 +94,7 @@ def discover_movies(request):
     return render(request, 'movies/all-movies.html')
 
 
-###############these are my regexes and dictionary########################################################           
+##############these are my regexes and dictionary########################################################           
 movie_titles = {}
 
 # these are my regexes we will zip them into a dictionary
@@ -105,8 +110,26 @@ movie_images_regex = re.compile(r'src="([^"]*)"')
 
 #this is the function that scrapes rotten tomatoes for movies!
 #ill use this to scrape, and sort things in other functions
+
 def scrape_website(url):
-    source = requests.get(url).content
+    #first were going to check if we have already webscraped this within the time we set  below
+    #if it is found, then we wont make a new request/webscrape, instead we will look in our cache.
+    #if its not found, we will indeed make the request/webscrape and then store the results so the next time we wont have to do this again!
+
+  
+    
+    if cache.get('webscrape') != None:
+        source = cache.get('webscrape')
+        print('cache')
+      
+    else:
+        source = str(requests.get(url).content)
+        cache.set('webscrape', source, 60 * 2)
+       
+        print('hit')
+      
+
+    
     soup = BeautifulSoup(source, 'lxml')
 
     classes = soup.find_all('div', class_='discovery-tiles__wrap')
@@ -155,6 +178,7 @@ def scrape_website(url):
 
 # this is the snippet to find movies, so this is where im going to add the 
 # web scraping stuff
+cache_page(60)
 @login_required
 def request_discover_movies(request):
     #what ever is returned (dictionary)
@@ -180,7 +204,7 @@ def request_discover_movies(request):
 
         
     return render(request, 'movies/snippets/find-movies.html', context) 
-
+cache_page(60)
 @login_required
 def request_top_movies(request):
     start_timer = time.perf_counter()
@@ -192,7 +216,13 @@ def request_top_movies(request):
     else:
         movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
     #this is gonna order from hiehgest values to least
-    order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore' ], reverse=True))
+    if cache.get('top_movies') != None:
+        order_movies = cache.get('top_movies')
+        print('cache')
+    else:
+        order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore' ], reverse=True))
+        cache.set('top_movies', order_movies, 60 * 2)
+        print('hit')
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
 
@@ -213,7 +243,7 @@ def request_top_movies(request):
     
     return render(request, 'movies/snippets/find-movies.html', context) 
 
-
+cache_page(60)
 @login_required
 def request_least_movies(request):
     start_timer = time.perf_counter()
@@ -223,7 +253,14 @@ def request_least_movies(request):
     else:
         movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
     #this is gonna order from hiehgest values to least
-    order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore'], reverse=False))
+   
+    if cache.get('least_movies')!= None:
+        order_movies = cache.get('least_movies')
+        print('cache')
+    else:
+        order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore'], reverse=False))
+        cache.set('least_movies', order_movies, 60 * 2)
+        print('hit')
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
 
@@ -252,7 +289,13 @@ def request_title_ordered(request):
     else:
         movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
 
-    order_movies = dict(sorted(movies.items(), key= lambda x: x[0], reverse=False))
+    if cache.get('alphabet_ordered')!= None:
+        order_movies = cache.get('alphabet_ordered')
+        print('cache')
+    else:
+        order_movies = dict(sorted(movies.items(), key= lambda x: x[0], reverse=False))
+        cache.set('alphabet_ordered', order_movies, 60 * 2)
+        print('hit')
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
 
