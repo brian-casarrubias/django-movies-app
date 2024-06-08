@@ -116,7 +116,7 @@ def scrape_website(url):
     #if it is found, then we wont make a new request/webscrape, instead we will look in our cache.
     #if its not found, we will indeed make the request/webscrape and then store the results so the next time we wont have to do this again!
 
-  
+
     
     if cache.get('webscrape') != None:
         source = cache.get('webscrape')
@@ -124,7 +124,8 @@ def scrape_website(url):
       
     else:
         source = str(requests.get(url).content)
-        cache.set('webscrape', source, 60 * 2)
+        source += str(requests.get('https://www.rottentomatoes.com/browse/movies_at_home/affiliates:netflix?page=6').content)
+        cache.set('webscrape', source, 60 * 5)
        
         print('hit')
       
@@ -215,13 +216,14 @@ def request_top_movies(request):
        
     else:
         movies = scrape_website('https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5')
+        
     #this is gonna order from hiehgest values to least
     if cache.get('top_movies') != None:
         order_movies = cache.get('top_movies')
         print('cache')
     else:
         order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore' ], reverse=True))
-        cache.set('top_movies', order_movies, 60 * 2)
+        cache.set('top_movies', order_movies, 60 * 5)
         print('hit')
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
@@ -259,7 +261,7 @@ def request_least_movies(request):
         print('cache')
     else:
         order_movies = dict(sorted(movies.items(), key= lambda x: x[1]['AudienceScore'], reverse=False))
-        cache.set('least_movies', order_movies, 60 * 2)
+        cache.set('least_movies', order_movies, 60 * 5)
         print('hit')
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
@@ -294,7 +296,7 @@ def request_title_ordered(request):
         print('cache')
     else:
         order_movies = dict(sorted(movies.items(), key= lambda x: x[0], reverse=False))
-        cache.set('alphabet_ordered', order_movies, 60 * 2)
+        cache.set('alphabet_ordered', order_movies, 60 * 5)
         print('hit')
     end_timer = time.perf_counter()
     print(F'Time it took to execute: {round(end_timer - start_timer, 2)} second(s)')
